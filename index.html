@@ -3,156 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>My Sanctuary for You</title>
+    <title>Our Private Universe</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --pink: #fce4ec;
-            --hot-pink: #ff80ab;
-            --yellow: #fff9c4;
-            --gold: #fbc02d;
-            --text: #880e4f;
+            --pink: #ffdae9;
+            --deep-pink: #ff4081;
+            --soft-yellow: #fffde7;
+            --glass: rgba(255, 255, 255, 0.4);
         }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(135deg, var(--pink), var(--yellow), #f8bbd0);
-            background-size: 400% 400%;
-            animation: flow 15s ease infinite;
+            overflow-x: hidden; font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(180deg, var(--soft-yellow) 0%, var(--pink) 100%);
+            scroll-behavior: smooth;
         }
 
-        @keyframes flow { 0% {background-position:0% 50%} 50% {background-position:100% 50%} 100% {background-position:0% 50%} }
+        /* 1. Floating Hearts Background */
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
 
-        /* Floating Love Rain */
-        .heart-particle {
-            position: absolute; color: var(--hot-pink);
-            opacity: 0.3; pointer-events: none;
-            animation: floatUp 6s linear infinite;
-        }
-        @keyframes floatUp {
-            from { transform: translateY(110vh) rotate(0deg); }
-            to { transform: translateY(-10vh) rotate(360deg); }
+        .main-container {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px; min-height: 100vh;
         }
 
-        .viewport {
-            position: relative; z-index: 10; height: 100vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        /* 2. The Starfishy Heartbeat */
+        .hero-section { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        
+        .pulse-container {
+            position: relative; width: 200px; height: 200px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .ring {
+            position: absolute; width: 100%; height: 100%;
+            border: 2px solid var(--deep-pink); border-radius: 50%;
+            animation: pulse 2s infinite; opacity: 0;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.7); opacity: 1; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        .starfishy { font-size: 100px; z-index: 5; filter: drop-shadow(0 0 20px var(--deep-pink)); cursor: pointer; }
+
+        /* 3. The Message Board */
+        .glass-card {
+            background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.6); border-radius: 30px;
+            padding: 30px; width: 90%; max-width: 450px; text-align: center;
+            margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        /* The Starfishy Hub */
-        .star-hub {
-            font-size: 100px; cursor: pointer;
-            filter: drop-shadow(0 0 20px var(--hot-pink));
-            animation: breathing 3s ease-in-out infinite;
-            z-index: 20;
-        }
-        @keyframes breathing {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px var(--hot-pink)); }
-            50% { transform: scale(1.1); filter: drop-shadow(0 0 30px var(--gold)); }
-        }
+        .love-note-text { font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ad1457; margin-bottom: 10px; }
 
-        .display-card {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(15px);
-            border-radius: 30px; border: 2px solid white;
-            padding: 30px; width: 85%; max-width: 500px;
-            text-align: center; margin-top: 20px;
-            box-shadow: 0 15px 35px rgba(255, 128, 171, 0.2);
+        /* 4. The Response Box (New!) */
+        .response-box { width: 100%; margin-top: 20px; }
+        textarea {
+            width: 100%; background: rgba(255,255,255,0.5); border: 2px solid white;
+            border-radius: 15px; padding: 15px; font-family: 'Quicksand';
+            resize: none; color: #ad1457; outline: none;
         }
+        .send-btn {
+            background: var(--deep-pink); color: white; border: none;
+            padding: 10px 25px; border-radius: 20px; font-weight: bold;
+            margin-top: 10px; cursor: pointer; transition: 0.3s;
+        }
+        .send-btn:active { transform: scale(0.9); }
 
-        .main-msg { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: var(--text); }
-
-        /* The Mood Dock */
-        .mood-dock {
-            position: absolute; bottom: 40px;
-            display: flex; gap: 15px; width: 100%;
-            justify-content: center; padding: 0 20px;
-        }
-        .mood-btn {
-            background: white; border: none; padding: 12px;
-            border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            font-size: 0.8rem; color: var(--text); font-weight: 700;
-            cursor: pointer; transition: 0.3s;
-        }
-        .mood-btn:active { transform: scale(0.9); background: var(--hot-pink); color: white; }
-
-        /* Secret Corner Buttons */
-        .corner-btn {
-            position: absolute; font-size: 1.5rem; opacity: 0.6; cursor: pointer; padding: 15px;
-        }
-        .tl { top: 10px; left: 10px; } .tr { top: 10px; right: 10px; }
-        .bl { bottom: 120px; left: 10px; } .br { bottom: 120px; right: 10px; }
+        /* 5. Ticking Timer */
+        .timer { font-size: 0.8rem; font-weight: 700; color: #d81b60; letter-spacing: 1px; }
 
     </style>
 </head>
 <body>
 
-    <div id="bg-elements"></div>
+<canvas id="bg-canvas"></canvas>
 
-    <div class="viewport">
-        <div class="corner-btn tl" onclick="alert('You are my first thought every morning. ☀️')">🌸</div>
-        <div class="corner-btn tr" onclick="alert('I am so lucky to be yours. 💍')">✨</div>
-        <div class="corner-btn bl" onclick="alert('You make me want to be a better man. ❤️')">☁️</div>
-        <div class="corner-btn br" onclick="alert('I love you more than all the stars. 🌌')">🌙</div>
-
-        <div class="star-hub" onclick="sparkleLove()">⭐</div>
-
-        <div class="display-card">
-            <div id="text-out" class="main-msg">Hey beautiful... touch my heart.</div>
+<div class="main-container">
+    
+    <div class="hero-section">
+        <div class="pulse-container" onclick="showRandomMsg()">
+            <div class="ring"></div>
+            <div class="ring" style="animation-delay: 0.5s;"></div>
+            <div class="starfishy">⭐</div>
         </div>
-
-        <div class="mood-dock">
-            <button class="mood-btn" onclick="moodMsg('sad')">I'm Sad</button>
-            <button class="mood-btn" onclick="moodMsg('anxious')">I'm Overwhelmed</button>
-            <button class="mood-btn" onclick="moodMsg('tired')">I'm Tired</button>
-            <button class="mood-btn" onclick="moodMsg('happy')">I'm Happy</button>
-        </div>
+        <h1 style="font-family: 'Dancing Script'; color: #ad1457; margin-top: 20px;">I Love You, Forever.</h1>
+        <div class="timer" id="timer">Calculating our love...</div>
     </div>
 
-    <script>
-        const textOut = document.getElementById('text-out');
-        const bg = document.getElementById('bg-elements');
+    <div class="glass-card">
+        <div id="love-display" class="love-note-text">Tap my heart above...</div>
+        <p style="font-size: 0.9rem; color: #d81b60;">You're my favorite human.</p>
+    </div>
 
-        // 1. Create Floating Background Hearts
-        function createHeart() {
-            const h = document.createElement('div');
-            h.innerHTML = '❤️';
-            h.className = 'heart-particle';
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            h.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            bg.appendChild(h);
-            setTimeout(() => h.remove(), 6000);
-        }
-        setInterval(createHeart, 500);
+    <div class="glass-card">
+        <h3 style="color: #ad1457; margin: 0 0 10px 0;">Leave a note for Starfishy</h3>
+        <div class="response-box">
+            <textarea id="reply" rows="3" placeholder="Write something sweet..."></textarea>
+            <button class="send-btn" onclick="sendLove()">Send to My Starfishy ❤️</button>
+        </div>
+        <div id="confirm" style="display:none; color: #4caf50; margin-top:10px; font-weight:bold;">Sent to his heart! ✓</div>
+    </div>
 
-        // 2. Mood Logic
-        const moods = {
-            sad: "Come here... *hugs you tight*. I'm not letting go until you feel better.",
-            anxious: "Breathe with me, Starfishy's girl. One... two... three. I've got you.",
-            tired: "You've worked so hard. Rest your head, I'm right here guarding your dreams.",
-            happy: "Your smile is my favorite thing in the whole world! Keep shining!"
-        };
-        function moodMsg(m) {
-            textOut.style.opacity = 0;
-            setTimeout(() => { textOut.innerText = moods[m]; textOut.style.opacity = 1; }, 300);
-        }
+</div>
 
-        // 3. Main Sparkle Logic
-        const quotes = [
-            "I love you endlessly.", "You are my favorite human.",
-            "Always your Starfishy. 🌊", "You are so precious to me.",
-            "My heart belongs to you.", "You are my sun and my moon."
-        ];
-        function sparkleLove() {
-            const q = quotes[Math.floor(Math.random() * quotes.length)];
-            textOut.innerText = q;
-            for(let i=0; i<15; i++) createHeart(); // Burst on click!
-        }
-    </script>
+<script>
+    // Timer Logic
+    const startDate = new Date('2023-10-08'); // EDIT THIS TO YOUR DATE
+    function updateTimer() {
+        const now = new Date();
+        const diff = now - startDate;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        document.getElementById('timer').innerText = `${days} DAYS OF US`;
+    }
+    setInterval(updateTimer, 1000); updateTimer();
+
+    // Message Logic
+    const messages = [
+        "I love you more than all the stars.",
+        "You're the best thing that ever happened to me.",
+        "I'm always clinging to you, no matter what.",
+        "Breathe. I'm right here with you.",
+        "You are so incredibly beautiful, inside and out.",
+        "I'm so proud of you, my love."
+    ];
+
+    function showRandomMsg() {
+        const display = document.getElementById('love-display');
+        display.style.opacity = 0;
+        setTimeout(() => {
+            display.innerText = messages[Math.floor(Math.random() * messages.length)];
+            display.style.opacity = 1;
+        }, 300);
+    }
+
+    // Response Logic
+    function sendLove() {
+        const text = document.getElementById('reply').value;
+        if(text.trim() === "") return;
+        
+        // This will open her email app with the message pre-filled to you!
+        // Replace 'your-email@gmail.com' with your real email.
+        window.location.href = `mailto:rafayidriss18@gmail.com?subject=A Note For My Starfishy&body=${encodeURIComponent(text)}`;
+        
+        document.getElementById('confirm').style.display = 'block';
+        document.getElementById('reply').value = '';
+    }
+
+    // Background Hearts
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let hearts = [];
+    function createHeart() {
+        hearts.push({
+            x: Math.random() * canvas.width,
+            y: canvas.height + 20,
+            size: Math.random() * 15 + 10,
+            speed: Math.random() * 2 + 1,
+            opacity: Math.random() * 0.5 + 0.2
+        });
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        hearts.forEach((h, i) => {
+            h.y -= h.speed;
+            ctx.globalAlpha = h.opacity;
+            ctx.font = `${h.size}px serif`;
+            ctx.fillText('💗', h.x, h.y);
+            if(h.y < -20) hearts.splice(i, 1);
+        });
+        requestAnimationFrame(animate);
+    }
+    setInterval(createHeart, 400);
+    animate();
+</script>
+
 </body>
 </html>
