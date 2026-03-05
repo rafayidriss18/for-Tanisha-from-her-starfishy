@@ -3,186 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Our Private Universe</title>
+    <title>Our Forever Universe | Starfishy</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
-    
     <style>
         :root {
-            --pink: #ffdae9;
-            --deep-pink: #ff4081;
-            --soft-yellow: #fffde7;
-            --glass: rgba(255, 255, 255, 0.4);
+            --pink: #ffdae9; --hot-pink: #ff4081; --yellow: #fffde7; --gold: #ffd54f; --text: #880e4f;
         }
 
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow-x: hidden; font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(180deg, var(--soft-yellow) 0%, var(--pink) 100%);
-            scroll-behavior: smooth;
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            font-family: 'Quicksand', sans-serif; background: var(--pink);
+            overflow-x: hidden; scroll-behavior: smooth;
         }
 
-        /* 1. Floating Hearts Background */
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
-
-        .main-container {
-            position: relative; z-index: 10;
-            display: flex; flex-direction: column; align-items: center;
-            padding: 20px; min-height: 100vh;
+        /* PARALLAX BACKGROUND */
+        .parallax-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 150vh;
+            background: radial-gradient(circle at center, var(--yellow) 0%, var(--pink) 100%);
+            z-index: -1;
         }
 
-        /* 2. The Starfishy Heartbeat */
-        .hero-section { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        
-        .pulse-container {
-            position: relative; width: 200px; height: 200px;
+        .section {
+            min-height: 100vh; width: 100%; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 60px 20px;
+            position: relative;
+        }
+
+        .big-title { font-family: 'Dancing Script'; font-size: 3.5rem; color: var(--text); margin: 10px 0; text-align: center; }
+        .sub-title { font-weight: 700; color: var(--hot-pink); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 30px; }
+
+        /* HERO STARFISHY */
+        .starfishy-hero {
+            font-size: 130px; filter: drop-shadow(0 0 30px var(--hot-pink));
+            animation: breathe 3s ease-in-out infinite; cursor: pointer;
+        }
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        /* THE JAR (SCROLLABLE VAULT) */
+        .jar-container {
+            width: 90%; max-width: 450px; height: 550px; border: 6px solid white;
+            border-radius: 40px 40px 100px 100px; background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(15px); position: relative; overflow-y: auto; overflow-x: hidden;
+            box-shadow: 0 25px 60px rgba(255, 64, 129, 0.2); padding: 20px;
+        }
+        .reason-note {
+            display: inline-block; margin: 8px; padding: 12px 18px; background: white; 
+            border-radius: 20px; font-size: 0.9rem; color: var(--hot-pink); font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); animation: floatCard 4s ease-in-out infinite alternate;
+        }
+        @keyframes floatCard { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+
+        /* BLOOM AREA */
+        #bloom-area {
+            width: 100%; max-width: 500px; height: 450px; background: rgba(255,255,255,0.15);
+            border-radius: 40px; border: 3px dashed white; position: relative; overflow: hidden;
             display: flex; align-items: center; justify-content: center;
         }
-        .ring {
-            position: absolute; width: 100%; height: 100%;
-            border: 2px solid var(--deep-pink); border-radius: 50%;
-            animation: pulse 2s infinite; opacity: 0;
-        }
-        @keyframes pulse {
-            0% { transform: scale(0.7); opacity: 1; }
-            100% { transform: scale(1.6); opacity: 0; }
-        }
-        .starfishy { font-size: 100px; z-index: 5; filter: drop-shadow(0 0 20px var(--deep-pink)); cursor: pointer; }
+        .flower { position: absolute; animation: grow 1.5s forwards; font-size: 45px; pointer-events: none; }
+        @keyframes grow { 0% { transform: scale(0) rotate(0deg); opacity: 0; } 100% { transform: scale(1.2) rotate(20deg); opacity: 1; } }
 
-        /* 3. The Message Board */
-        .glass-card {
-            background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.6); border-radius: 30px;
-            padding: 30px; width: 90%; max-width: 450px; text-align: center;
-            margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        /* TIMELINE */
+        .timeline { width: 100%; max-width: 700px; position: relative; display: flex; flex-direction: column; }
+        .timeline::before {
+            content: ''; position: absolute; left: 50%; width: 4px; height: 100%;
+            background: white; transform: translateX(-50%); border-radius: 2px;
         }
-
-        .love-note-text { font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ad1457; margin-bottom: 10px; }
-
-        /* 4. The Response Box (New!) */
-        .response-box { width: 100%; margin-top: 20px; }
-        textarea {
-            width: 100%; background: rgba(255,255,255,0.5); border: 2px solid white;
-            border-radius: 15px; padding: 15px; font-family: 'Quicksand';
-            resize: none; color: #ad1457; outline: none;
+        .milestone {
+            background: white; padding: 25px; border-radius: 25px; width: 42%;
+            margin: 30px 0; position: relative; box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            z-index: 2;
         }
-        .send-btn {
-            background: var(--deep-pink); color: white; border: none;
-            padding: 10px 25px; border-radius: 20px; font-weight: bold;
-            margin-top: 10px; cursor: pointer; transition: 0.3s;
-        }
-        .send-btn:active { transform: scale(0.9); }
-
-        /* 5. Ticking Timer */
-        .timer { font-size: 0.8rem; font-weight: 700; color: #d81b60; letter-spacing: 1px; }
+        .milestone:nth-child(odd) { align-self: flex-start; text-align: right; }
+        .milestone:nth-child(even) { align-self: flex-end; text-align: left; }
+        .milestone-title { color: var(--hot-pink); font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; }
 
     </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+    <div class="parallax-bg" id="bg"></div>
 
-<div class="main-container">
-    
-    <div class="hero-section">
-        <div class="pulse-container" onclick="showRandomMsg()">
-            <div class="ring"></div>
-            <div class="ring" style="animation-delay: 0.5s;"></div>
-            <div class="starfishy">⭐</div>
+    <div class="section">
+        <div class="starfishy-hero" onclick="burstHearts(event)">⭐</div>
+        <h1 class="big-title">To My Everything</h1>
+        <p class="sub-title">Your Starfishy's Heart, Unfolded</p>
+    </div>
+
+    <div class="section">
+        <h2 class="big-title">100 Reasons Why</h2>
+        <p class="sub-title">Every piece of you is perfect</p>
+        <div class="jar-container" id="jar">
+            </div>
+    </div>
+
+    <div class="section">
+        <h2 class="big-title">Your Touch</h2>
+        <p class="sub-title">Hold your finger here to grow my love</p>
+        <div id="bloom-area">
+            <span style="opacity:0.4; color:var(--text)">Hold & Bloom</span>
         </div>
-        <h1 style="font-family: 'Dancing Script'; color: #ad1457; margin-top: 20px;">I Love You, Forever.</h1>
-        <div class="timer" id="timer">Calculating our love...</div>
     </div>
 
-    <div class="glass-card">
-        <div id="love-display" class="love-note-text">Tap my heart above...</div>
-        <p style="font-size: 0.9rem; color: #d81b60;">You're my favorite human.</p>
+    <div class="section" style="min-height: auto;">
+        <h2 class="big-title">Our Eternal Journey</h2>
+        <p class="sub-title">50 Moments That Defined Us</p>
+        <div class="timeline" id="timeline">
+            </div>
     </div>
 
-    <div class="glass-card">
-        <h3 style="color: #ad1457; margin: 0 0 10px 0;">Leave a note for Starfishy</h3>
-        <div class="response-box">
-            <textarea id="reply" rows="3" placeholder="Write something sweet..."></textarea>
-            <button class="send-btn" onclick="sendLove()">Send to My Starfishy ❤️</button>
-        </div>
-        <div id="confirm" style="display:none; color: #4caf50; margin-top:10px; font-weight:bold;">Sent to his heart! ✓</div>
-    </div>
+    <script>
+        // 1. DATA: 100 REASONS
+        const reasons = [
+            "Your sleepy morning voice", "How you say my name", "The way you handle my heart", "Your resilience", "Your kindness to strangers", "The crinkle by your eyes when you laugh", "Your 'Starfishy' jokes", "How you make me feel safe", "Your scent on my favorite hoodie", "The way you challenge me to be better", "Your hidden talents", "How you remember the little things", "Your grace under pressure", "The way you look at me", "Your soft hands", "Your messy hair days", "The way you dream big", "Your empathy for others", "How you make 'home' feel like a person", "Your unwavering support", "The way you light up a room", "Your intelligence", "Your silly dances", "How you appreciate the moon", "Your taste in music", "The way you protect our peace", "Your patience with me", "How you look in the sunlight", "Your beautiful mind", "The way you forgive", "Your courage", "Your soft heart", "The way you focus", "Your contagious energy", "How you make me a better man", "Your loyalty", "The way you celebrate my wins", "Your vulnerability", "How you look in my shirts", "Your unique perspective", "The way you handle my bad days", "Your sense of adventure", "How you cherish quiet moments", "Your warmth on a cold day", "The way you trust me", "Your curiosity", "How you make mundane things special", "Your inner strength", "The way you ground me", "Your voice when you're excited", "Your dedication", "The way you fit in my arms", "Your stubbornness (it’s cute)", "Your passion", "How you see the best in everyone", "Your laugh that echoes", "The way you make me feel understood", "Your honesty", "How you look at the stars", "Your gentle touch", "Your wisdom", "The way you prioritize us", "Your beautiful soul", "How you smell like sunshine", "Your 'just woke up' face", "The way you handle my quirks", "Your infectious smile", "How you make life feel easy", "Your attention to detail", "The way you listen", "Your strength of character", "How lucky I feel", "Your bubbly personality", "The way you hold my hand", "Your creative spirit", "How you notice small changes", "Your sense of humor", "The way you stand up for us", "Your soft whispers", "How you make grocery runs fun", "Your radiant energy", "The way you look when thinking", "Your comforting presence", "How you believe in me", "Your beautiful eyes", "The way you say 'I love you'", "Your adventurous spirit", "How you handle my silences", "Your thoughtfulness", "Your sweet text messages", "Your inner beauty", "How you make our world magical", "Your 'I missed you' hugs", "The way you dream about us", "Your comforting words", "You are my favorite distraction", "Your elegance", "The way you choose me daily", "Your love that saved me", "Simply... all of you."
+        ];
 
-</div>
+        // 2. DATA: 50 MILESTONES
+        const milestones = [
+            {t: "The First Hello", d: "Where it all began."}, {t: "The First Conversation", d: "When I realized you were different."}, {t: "The First Laugh", d: "The sound that changed my life."}, {t: "Starfishy Origin", d: "When our favorite joke was born."}, {t: "First Secret Shared", d: "Building our bridge of trust."}, {t: "Talked Until Dawn", d: "Losing track of time together."}, {t: "First Time I Saw You Blush", d: "I'll never forget it."}, {t: "The Realization", d: "When I knew I was in love."}, {t: "First I Love You", d: "Three words, one new life."}, {t: "First Big Fight", d: "We chose each other anyway."}, {t: "Makeup Hugs", d: "Stronger than before."}, {t: "First Trip Together", d: "Seeing the world with you."}, {t: "Building Our Bubble", d: "Our own private universe."}, {t: "The First Hard Day", d: "You showed me your true strength."}, {t: "First Anniversary", d: "365 days of choosing you."}, {t: "Your Coffee Order", d: "Learning the little things."}, {t: "First Tears Together", d: "Promising to protect you."}, {t: "Meeting Family", d: "A huge step for us."}, {t: "Inside Language", d: "Jokes only we understand."}, {t: "Dreaming of Home", d: "Decorating our future."}, {t: "The Ache of Absence", d: "Knowing I can't be without you."}, {t: "Rainy Day Cuddles", d: "Peace in the storm."}, {t: "Cooking Together", d: "A beautiful, messy disaster."}, {t: "The Perfect Gift", d: "Knowing I finally 'got' you."}, {t: "Calling Me Yours", d: "The ultimate title."}, {t: "Our Song", d: "The melody of us."}, {t: "Standing Together", d: "Team 'Us' against the world."}, {t: "Watching You Sleep", d: "The most peaceful view."}, {t: "The First Plan", d: "Knowing this was forever."}, {t: "Helping Me Heal", d: "You are my medicine."}, {t: "Taking a Deep Breath", d: "No more hiding with you."}, {t: "Perfect Silence", d: "Saying everything without a word."}, {t: "First Holiday", d: "Our own traditions."}, {t: "Dancing in the Kitchen", d: "Pure joy."}, {t: "Guarding Your Peace", d: "My favorite job."}, {t: "First Sunset", d: "Beauty with beauty."}, {t: "Changing Perspective", d: "My wise girl."}, {t: "Truly Home", d: "Finding it in your arms."}, {t: "A Promise Kept", d: "Building our foundation."}, {t: "Surprising Me", d: "Keeping the spark alive."}, {t: "Hard Choices", d: "Two minds, one heart."}, {t: "Crying from Laughter", d: "Pure, unadulterated love."}, {t: "The Real Me", d: "You saw it and you stayed."}, {t: "The Real You", d: "I saw it and fell harder."}, {t: "First Morning Together", d: "The best start to any day."}, {t: "Speaking of Our Future", d: "Our legacy of love."}, {t: "Supporting My Dreams", d: "My #1 fan always."}, {t: "The Forever Promise", d: "And I meant every word."}, {t: "Every Single Day", d: "A continuous milestone."}, {t: "This Exact Second", d: "Right now. I love you."}
+        ];
 
-<script>
-    // Timer Logic
-    const startDate = new Date('2023-10-08'); // EDIT THIS TO YOUR DATE
-    function updateTimer() {
-        const now = new Date();
-        const diff = now - startDate;
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        document.getElementById('timer').innerText = `${days} DAYS OF US`;
-    }
-    setInterval(updateTimer, 1000); updateTimer();
-
-    // Message Logic
-    const messages = [
-        "I love you more than all the stars.",
-        "You're the best thing that ever happened to me.",
-        "I'm always clinging to you, no matter what.",
-        "Breathe. I'm right here with you.",
-        "You are so incredibly beautiful, inside and out.",
-        "I'm so proud of you, my love."
-    ];
-
-    function showRandomMsg() {
-        const display = document.getElementById('love-display');
-        display.style.opacity = 0;
-        setTimeout(() => {
-            display.innerText = messages[Math.floor(Math.random() * messages.length)];
-            display.style.opacity = 1;
-        }, 300);
-    }
-
-    // Response Logic
-    function sendLove() {
-        const text = document.getElementById('reply').value;
-        if(text.trim() === "") return;
-        
-        // This will open her email app with the message pre-filled to you!
-        // Replace 'your-email@gmail.com' with your real email.
-        window.location.href = `mailto:rafayidriss18@gmail.com?subject=A Note For My Starfishy&body=${encodeURIComponent(text)}`;
-        
-        document.getElementById('confirm').style.display = 'block';
-        document.getElementById('reply').value = '';
-    }
-
-    // Background Hearts
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let hearts = [];
-    function createHeart() {
-        hearts.push({
-            x: Math.random() * canvas.width,
-            y: canvas.height + 20,
-            size: Math.random() * 15 + 10,
-            speed: Math.random() * 2 + 1,
-            opacity: Math.random() * 0.5 + 0.2
+        // INJECT REASONS
+        const jar = document.getElementById('jar');
+        reasons.forEach(r => {
+            const span = document.createElement('div');
+            span.className = 'reason-note';
+            span.innerText = r;
+            jar.appendChild(span);
         });
-    }
 
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        hearts.forEach((h, i) => {
-            h.y -= h.speed;
-            ctx.globalAlpha = h.opacity;
-            ctx.font = `${h.size}px serif`;
-            ctx.fillText('💗', h.x, h.y);
-            if(h.y < -20) hearts.splice(i, 1);
+        // INJECT MILESTONES
+        const tl = document.getElementById('timeline');
+        milestones.forEach(m => {
+            const div = document.createElement('div');
+            div.className = 'milestone';
+            div.innerHTML = `<div class="milestone-title">${m.t}</div><p>${m.d}</p>`;
+            tl.appendChild(div);
         });
-        requestAnimationFrame(animate);
-    }
-    setInterval(createHeart, 400);
-    animate();
-</script>
 
+        // BLOOM LOGIC
+        const bloomArea = document.getElementById('bloom-area');
+        const flowers = ['🌸', '💖', '⭐', '🌷', '✨'];
+        bloomArea.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            const rect = bloomArea.getBoundingClientRect();
+            const f = document.createElement('div');
+            f.className = 'flower';
+            f.innerText = flowers[Math.floor(Math.random()*flowers.length)];
+            f.style.left = (touch.clientX - rect.left - 20) + 'px';
+            f.style.top = (touch.clientY - rect.top - 20) + 'px';
+            bloomArea.appendChild(f);
+            setTimeout(() => f.remove(), 2000);
+        });
+
+        // PARALLAX
+        window.addEventListener('scroll', () => {
+            document.getElementById('bg').style.transform = `translateY(${window.pageYOffset * 0.4}px)`;
+        });
+
+        // HEART BURST
+        function burstHearts(e) {
+            for(let i=0; i<10; i++) {
+                const h = document.createElement('div');
+                h.innerHTML = '❤️'; h.style.position = 'fixed';
+                h.style.left = e.clientX + 'px'; h.style.top = e.clientY + 'px';
+                h.style.transition = 'all 1s ease-out'; h.style.pointerEvents = 'none';
+                document.body.appendChild(h);
+                setTimeout(() => {
+                    h.style.transform = `translate(${(Math.random()-0.5)*300}px, ${(Math.random()-0.5)*300}px) scale(0)`;
+                    h.style.opacity = '0';
+                }, 10);
+                setTimeout(() => h.remove(), 1000);
+            }
+        }
+    </script>
 </body>
 </html>
